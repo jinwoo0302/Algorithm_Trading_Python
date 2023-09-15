@@ -14,14 +14,15 @@ targetCodeList=instCpCodeMgr.GetIndustryGroupCodeList('KGS01P')
 for code in targetCodeList:
     print(code, instCpCodeMgr.CodeToName(code))
 
+#각 종목의 PER 값은 CpSyDib 모듈의 MarketEye 클래스를 사용해 얻을 수 있었습니다.
 instMarketEye=win32com.client.Dispatch("CpSysDib.MarketEye")
 
 instMarketEye.SetInputValue(0, 67)
-instMarketEye.SetInputValue(1,targetCodeList)
+instMarketEye.SetInputValue(1,targetCodeList) #코드 리스트 던져주기
 
-instMarketEye.BlockRequest()
+instMarketEye.BlockRequest() #요청 보내기
 
-numStock=instMarketEye.GetHeaderValue(2)
+numStock=instMarketEye.GetHeaderValue(2)#값 개수 받아오기.
 
 sumPer=0
 for i in range(numStock):
