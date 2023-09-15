@@ -15,3 +15,17 @@ for code in targetCodeList:
     print(code, instCpCodeMgr.CodeToName(code))
 
 instMarketEye=win32com.client.Dispatch("CpSysDib.MarketEye")
+
+instMarketEye.SetInputValue(0, 67)
+instMarketEye.SetInputValue(1,targetCodeList)
+
+instMarketEye.BlockRequest()
+
+numStock=instMarketEye.GetHeaderValue(2)
+
+sumPer=0
+for i in range(numStock):
+    sumPer+=instMarketEye.GetDataValue(0,i)
+
+print("Average Per: ",sumPer/numStock)
+
