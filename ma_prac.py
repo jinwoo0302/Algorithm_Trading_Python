@@ -1,13 +1,33 @@
 import pandas as pd
 import yfinance as yf
+import matplotlib.pyplot as plt
+
 
 gs=yf.download("078930.KS", "2014-01-01", "2016-03-06")
 
-#print(gs)
+new_gs = gs[gs['Volume'] !=0]
+print(gs.tail()) #데이터 끝 5개
 
-print(gs.tail())
 
-ma5=gs['Adj Close'].rolling(window=5).mean()
+# Moving average
+ma5=new_gs['Adj Close'].rolling(window=5).mean()
+ma20=new_gs['Adj Close'].rolling(window=20).mean()
+ma60=new_gs['Adj Close'].rolling(window=60).mean()
+ma120=new_gs['Adj Close'].rolling(window=120).mean()
 
-print(type(ma5))
-print(ma5.tail(10))
+# Insert columns
+new_gs.insert(len(new_gs.columns), 'MA5', ma5)
+new_gs.insert(len(new_gs.columns), 'MA20', ma20)
+new_gs.insert(len(new_gs.columns), 'MA60', ma60)
+new_gs.insert(len(new_gs.columns), 'MA120', ma120)
+
+# Plot
+plt.plot(new_gs.index, new_gs['Adj Close'], label= "Adj Close")
+plt.plot(new_gs.index, new_gs['MA5'], label= "MA5")
+plt.plot(new_gs.index, new_gs['MA20'], label= "MA20")
+plt.plot(new_gs.index, new_gs['MA60'], label= "MA60")
+plt.plot(new_gs.index, new_gs['MA120'], label= "MA120")
+
+plt.legend(loc='best')
+plt.grid()
+plt.show()
